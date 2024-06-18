@@ -70,6 +70,9 @@ def calc_etamb(freq, Jupiter=False):
         # are approximately the size of Jupiter (43" diameter)
         eta_mb = 1.23 * eta_a + 0.005*(freq.value-60) - 0.00003 * (freq.value - 60)**2
     # else calculate "small source" eta_mb.
+    elif freq > 110.0*u.GHz:
+        # corrected for higher freq (D.Frayer) 
+        eta_mb = 1.24 * (freq.value/113)**0.8 * math.exp ( -(1.3*freq.value/113)**2 )
     elif freq > 100.0*u.GHz:
         # GBT memo 302 finds that at high frequencies the eta_mb/eta_b ratio is more like 1.45 due to a slightly larger beam size factor (1.28 instead of 1.2).
         eta_mb = 1.45 * eta_a
