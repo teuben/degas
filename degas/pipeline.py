@@ -388,7 +388,7 @@ def doPipeline(SessionNumber=7,StartScan = 27, EndScan=44,
         warnings.warn('Using spatial masking to set OFF positions')
         maskhdu = fits.open(MaskName.format(Galaxy.upper()))
         # mask = ~np.any(maskhdu[0].data, axis=0)
-        mask = (maskhdu[0].data).astype(np.bool)
+        mask = (maskhdu[0].data).astype(bool)
         mask = maskhdu[0].data
         w = wcs.WCS(maskhdu[0].header)
         offselect = functools.partial(ArgusCal.SpatialSpectralMask,

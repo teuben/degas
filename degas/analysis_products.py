@@ -144,7 +144,7 @@ def calc_products(this_base_infile,
 
     # calculate mom0
     mymask = SpectralCube.read(mask_file)
-    mymask = np.array(mymask.filled_data[:].value,dtype=np.bool)
+    mymask = np.array(mymask.filled_data[:].value,dtype=bool)
     basecube_masked_mymask = basecube.with_mask(mymask,inherit_mask=False) ## inherit_mask=False means any existing mask on the cube is removed.
 
     mom0,emom0 = write_moment0(basecube_masked_mymask, rms = rmscube, 
@@ -206,7 +206,7 @@ def mad_zero_centered(data, mask=None):
     Keywords:
     ---------
     
-    mask : np.bool
+    mask : bool
 
         Boolean array with True indicating where data can be used in
         the noise estimate. (i.e., True is noise). If none is supplied
@@ -291,18 +291,18 @@ def noise_cube(data, mask=None,
     Keywords:
     ---------
     
-    mask : np.bool
+    mask : bool
 
         Boolean array with False indicating where data can be 
         used in the noise estimate. (i.e., True is signal). 
     
-    do_map : np.bool
+    do_map : bool
     
         Estimate spatial variations in the noise. Default is True. If
         set to False, all locations in a plane have the same noise
         estimate.
 
-    do_spec : np.bool
+    do_spec : bool
     
         Estimate spectral variations in the noise. Default is True. If
         set to False, all channels in a spectrum have the same noise
@@ -594,7 +594,7 @@ def recipe_degas_noise(
     Keywords:
     ---------
     
-    mask : np.bool
+    mask : bool
 
         Boolean array with False indicating where data can be used in
         the noise estimate. (i.e., True is signal). 
@@ -799,7 +799,7 @@ def moment_generator(
         # here or (better) build a masking routine to apply masks with
         # arbitrary astrometry.
 
-        mask = np.array(mask.filled_data[:].value, dtype=np.bool)
+        mask = np.array(mask.filled_data[:].value, dtype=bool)
         cube = cube.with_mask(mask, inherit_mask=False)
 
     # Read in the noise (if present)
