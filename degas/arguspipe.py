@@ -110,10 +110,18 @@ def gettsys(cl_params, row_list, thisfeed, thispol, thiswin, pipe,
     elevation = np.mean(integ1.data['ELEVATIO'])
 
     # Pull warm load temperature from the data
-    twarm = np.mean(integ1.data['TWARM']+273.15)
     tbg = 2.725  # It's the CMB
     tambient = np.mean(integ1.data['TAMBIENT'])
     avgfreq = np.mean(integ1.data['OBSFREQ'])
+    #twarm = np.mean(integ1.data['TWARM']+273.15)
+    twarm = np.mean(integ1.data['TWARM'])
+    if twarm > 98:
+        # the 2024/25 faulty sensor
+        twarm = tambient + 1.5
+        print(f"WARNING1: faulty sensor fix, using twarm={twarm}")
+    else:
+        twarm = twarm + 273.15    # back to Kelvin
+    
 
     # Use weather model to get the atmospheric temperature and opacity
     zenithtau = weather.retrieve_zenith_opacity(mjd, avgfreq, log=log,
