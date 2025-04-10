@@ -79,6 +79,8 @@ def calc_etamb(freq, Jupiter=False):
     else: 
         # GBT memo 302 finds that for frequencies of 86-90GHz you can use the expected theoretical ratio of 1.274
         eta_mb = 1.274 * eta_a
+
+    print("ETA A,MB: ",eta_a, eta_mb, "at freq ", freq)
         
     return (eta_a, eta_mb)
 
@@ -340,8 +342,18 @@ def cleansplit(filename, galaxy=None,
         ## see equations 2 and 3 in GBT memo 302.
         ## GBT forward efficiency is 0.99 ~= 1.0.
         ## assumes that rest freq ~ observing freq, which should be okay for our sources.
-        freq = ThisCube.header['RESTFRQ'] * u.Hz
-        (eta_a, eta_mb) = calc_etamb(freq)
+        ## better to use skyfreq, in case galaxies are used (pjt)
+        ## accuracy of this doppler shift equation isn't important
+
+        vlsr = ThisCube.header['CRVAL3']
+        if vlsr > 100:
+            restfreq = ThisCube.header['RESTFRQ']
+            freq = (1-vlsr/300000)*restfreq      # vlsr units are km/s !!
+            # or check 'CUNIT3' == 'km s-1  '
+        else:
+            freq = ThisCube.header['RESTFRQ']
+        
+        (eta_a, eta_mb) = calc_etamb(freq * u.Hz)
         ThisCube = ThisCube/eta_mb
 
         # Final Writeout
