@@ -211,8 +211,9 @@ def cleansplit(filename, galaxy=None,
                             MatchRow['DEC'],
                             unit=(u.hourangle, u.deg))
         Galaxy = MatchRow['NAME'].data[0]
-        print("Catalog Match with " + Galaxy)
         V0 = MatchRow['CATVEL'].data[0] * u.km / u.s
+        
+    print(f"Catalog Match with {Galaxy} V0={V0}")
 
     # Check spectral setups.  Use the max frequencies present to
     # determine which spectral setup we used if not specifed.
@@ -286,6 +287,9 @@ def cleansplit(filename, galaxy=None,
         ThisCube.write(Galaxy + '_' + ThisLine + '.fits', overwrite=True)
         StartChan = ThisCube.closest_spectral_channel(V0 - Vgalaxy)
         EndChan = ThisCube.closest_spectral_channel(V0 + Vgalaxy)
+        if StartChan > EndChan:
+            print(f"Warning: Swapping Start {StartChan} and End {EndChannel} Channel!")
+            StartChan, EndChan = EndChan, StartChan
         if maskfile is not None:
             maskLookup = buildMaskLookup(maskfile)
             shp = ThisCube.shape
@@ -318,6 +322,8 @@ def cleansplit(filename, galaxy=None,
                                                         slice(EndChan,
                                                               ThisCube.shape[0],1)],
                                         blorder=blorder)
+            print(f"No mask:  Using Vgalaxy={Vgalaxy} half-width for baseline; startch={StartChan} endch={EndChan}")
+            
         ThisCube = SpectralCube.read(Galaxy + '_' + ThisLine +
                                      '_rebase{0}'.format(blorder) + '.fits')
         ThisCube.allow_huge_operations=True
