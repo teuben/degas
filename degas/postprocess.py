@@ -199,9 +199,13 @@ def cleansplit(filename, galaxy=None,
         galcoord = SkyCoord(MatchRow['RA'],
                             MatchRow['DEC'],
                             unit=(u.hourangle, u.deg))
+        # pick the first one, in case there are more.... that's an error
+        if len(MatchRow['NAME'].data > 1:
+            print("Warning: multiple entries for ", MatchRow['NAME'].data)
         Galaxy = MatchRow['NAME'].data[0]
         print("Catalog Match with " + Galaxy)
         V0 = MatchRow['CATVEL'].data[0] * u.km / u.s
+        galcoord = galcoord[0]
 
     elif type(galaxy) is str:
         match = np.zeros_like(Catalog, dtype=bool)
