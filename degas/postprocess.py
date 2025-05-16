@@ -200,7 +200,7 @@ def cleansplit(filename, galaxy=None,
                             MatchRow['DEC'],
                             unit=(u.hourangle, u.deg))
         # pick the first one, in case there are more.... that's an error
-        if len(MatchRow['NAME'].data > 1:
+        if len(MatchRow['NAME'].data) > 1:
             print("Warning: multiple entries for ", MatchRow['NAME'].data)
         Galaxy = MatchRow['NAME'].data[0]
         print("Catalog Match with " + Galaxy)
@@ -294,7 +294,7 @@ def cleansplit(filename, galaxy=None,
         StartChan = ThisCube.closest_spectral_channel(V0 - Vgalaxy)
         EndChan = ThisCube.closest_spectral_channel(V0 + Vgalaxy)
         if StartChan > EndChan:
-            print(f"Warning: Swapping Start {StartChan} and End {EndChannel} Channel!")
+            print(f"Warning: Swapping Start {StartChan} and End {EndChan} Channel!")
             StartChan, EndChan = EndChan, StartChan
         if maskfile is not None:
             maskLookup = buildMaskLookup(maskfile)
